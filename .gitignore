@@ -1,7 +1,9 @@
 __pycache__/
 .vscode/
-dataset_export/*
-dataset_results/*
+dataset_export/*.png
+dataset_export/*.jpg
+dataset_export/*.jpeg
+dataset_results/*.json
 img/*LSB*
 img/*DCT*
 img/*DWT*
