@@ -10,7 +10,7 @@ from text_to_img import *
 from dct_watermark import *
 from dwt_watermark import *
 
-# 
+# the function that handel showing the images
 def show_image(image_path, image_preview, image_entry=None, thumbnail_size=(250, 250), image_info_label=None):
     if image_path == (): return  # Exit if get an empty image path
 
@@ -35,7 +35,7 @@ def show_image(image_path, image_preview, image_entry=None, thumbnail_size=(250,
         img_size = f"{height}px * {width}px"
         image_info_label.configure(text=img_size)
 
-# 
+# the function that handel hiding the images
 def hide_image(image_label, image_info_label=None):
     # hide the image
     image_label.configure(image=None)
@@ -45,11 +45,13 @@ def hide_image(image_label, image_info_label=None):
     if not image_info_label == None:
         image_info_label.configure(text="")
 
-# 
+# the function that handel calculating the available embedding space on the cover image
 def calculate_embedding_space():
+    # get the cover path
     cover_path = cover_image_entry.get()
     if cover_path == "": return
 
+    # get cover size
     cover_img = Image.open(cover_path)
     height, width = cover_img.height, cover_img.width
 
@@ -75,7 +77,7 @@ def calculate_embedding_space():
     # show the embedding size
     embedding_space_label.config(text=f"Embedding Space: {embedding_space} bits =  {embedding_space/8} bytes")
 
-# 
+# the function that handel calculating the required embedding space for the watermark
 def calculate_required_embedding_space():
     # text watermark
     if change_wm_type_button["text"] == "Change to Image":
@@ -107,12 +109,13 @@ def calculate_required_embedding_space():
     # show the required embedding size
     required_embedding_space_label.config(text=f"Required Embedding Space: {required_embedding_space} bytes")
 
-# 
+# the function that handel showing the cover image and the paths
 def show_cover_image(image_path):
     if image_path == (): return  # Exit if get an empty image path
 
     reset_interface()
 
+    # show cover image
     show_image(image_path, cover_image_preview, cover_image_entry, image_info_label=cover_image_info)
 
     # Insert the coded image path into the entry widget
@@ -129,8 +132,9 @@ def show_cover_image(image_path):
     # calculate the imbedding space
     calculate_embedding_space()
 
-# 
+# the function that handel encoding the watermark on the cover image
 def encode_watermark():
+    # get paths
     cover_path = cover_image_entry.get()
     stego_path = stego_image_entry.get()
     signature_size = int(signature_size_entry.get())
@@ -163,7 +167,7 @@ def encode_watermark():
     elif selected_algorithm.get() == "DCT":
         # text watermark
         if change_wm_type_button["text"] == "Change to Image":
-            # generate text image
+            # generate binary image
             watermark_path = "./img/binary_img.png"
             text = watermark_entry.get()
             text_to_image(text, path=watermark_path, image_size=(signature_size, signature_size))
@@ -172,13 +176,16 @@ def encode_watermark():
         elif change_wm_type_button["text"] == "Change to Text":
             watermark_path = watermark_entry.get()
 
+        # get paths
         cover_image = cv2.imread(cover_path)
         watermark_image = cv2.imread(watermark_path, cv2.IMREAD_GRAYSCALE)
         
+        # create dct object
         dct = DCT_Watermark()
         dct.set_signature_size(signature_size)
         dct.set_block_size(int(dct_block_size_entry.get()))
         
+        # encode the watermark
         stego_image = dct.embed(cover_image, watermark_image)
         cv2.imwrite(stego_path, stego_image)
 
@@ -186,7 +193,7 @@ def encode_watermark():
     elif selected_algorithm.get() == "DWT":
         # Encode a message
         if change_wm_type_button["text"] == "Change to Image":
-            # generate text image
+            # generate binary image
             watermark_path = "./img/binary_img.png"
             text = watermark_entry.get()
             text_to_image(text, path=watermark_path, image_size=(signature_size, signature_size))
@@ -194,14 +201,17 @@ def encode_watermark():
         elif change_wm_type_button["text"] == "Change to Text":
             watermark_path = watermark_entry.get()
 
+        # get paths
         cover_image = cv2.imread(cover_path)
         watermark_image = cv2.imread(watermark_path, cv2.IMREAD_GRAYSCALE)
         
+        # create dwt object
         dwt = DWT_Watermark()
         dwt.set_signature_size(signature_size)
         dwt.set_level(int(wavelet_level_entry.get()))
         dwt.set_sub_band(selected_sub_band.get())
 
+        # encode the watermark
         stego_image = dwt.embed(cover_image, watermark_image)
         cv2.imwrite(stego_path, stego_image)
 
@@ -214,7 +224,7 @@ def encode_watermark():
     # calculate metrics
     calc_metrics()
 
-# 
+# the function that handel decoding the watermark from the stego image
 def decode_watermark(attacked=False):
     # get paths
     if not attacked: stego_path = stego_image_entry.get()
@@ -222,9 +232,11 @@ def decode_watermark(attacked=False):
 
     signature_size = int(signature_size_entry.get())
 
+    # generate signature path
     file_name, file_extension = os.path.splitext(stego_path)
     signature_path = f"{file_name}_signature{file_extension}"
 
+    # write the signature path on the signature entry
     signature_image_entry.delete(0, tk.END)
     signature_image_entry.insert(tk.END, signature_path)
 
@@ -241,7 +253,6 @@ def decode_watermark(attacked=False):
 
         # image signature
         elif change_wm_type_button["text"] == "Change to Text":
-            # Encode the watermark
             if selected_lsb.get() == "LSB RGB":
                 lsb.decode_lsb_img_rgb(stego_path, signature_path, signature_size=signature_size)
             elif selected_lsb.get() == "LSB Gray Scale":
@@ -253,11 +264,12 @@ def decode_watermark(attacked=False):
     elif selected_algorithm.get() == "DCT":
         stego_image = cv2.imread(stego_path)
         
-        # extract the signature
+        # create dct object
         dct = DCT_Watermark()
         dct.set_signature_size(int(signature_size_entry.get()))
         dct.set_block_size(int(dct_block_size_entry.get()))
 
+        # extract the signature
         signature = dct.extract(stego_image)
         cv2.imwrite(signature_path, signature)
 
@@ -265,12 +277,13 @@ def decode_watermark(attacked=False):
     elif selected_algorithm.get() == "DWT":
         stego_image = cv2.imread(stego_path)
         
-        # extract the signature
+        # create dwt object
         dwt = DWT_Watermark()
         dwt.set_signature_size(int(signature_size_entry.get()))
         dwt.set_level(int(wavelet_level_entry.get()))
         dwt.set_sub_band(selected_sub_band.get())
 
+        # extract the signature
         signature = dwt.extract(stego_image)
         cv2.imwrite(signature_path, signature)
 
@@ -292,7 +305,7 @@ def decode_watermark(attacked=False):
         if not attacked: show_image(signature_path, signature_image_preview, thumbnail_size=(150, 150), image_info_label=signature_image_info)
         else: show_image(signature_path, attacked_signature_image_preview, thumbnail_size=(150, 150))
 
-# 
+# the function that handel applying attacks on the stego image
 def apply_attacks():
     # get paths
     stego_path = stego_image_entry.get()
@@ -374,7 +387,7 @@ def apply_attacks():
     # calculate attacked metrics
     calc_attacked_metrics()
 
-# calculate the watermarking metrics
+# the function that handel calculating the watermarking metrics
 def calc_metrics():
     # Get images path
     cover_path = cover_image_entry.get()
@@ -425,7 +438,7 @@ def calc_metrics():
             # Calculate metrics
             NC_result.config(text = round(nc(watermark, signature), 7))
 
-# calculate the attacked watermarking metrics
+# the function that handel calculating the attacked watermarking metrics
 def calc_attacked_metrics():
     # Get images path
     cover_path = cover_image_entry.get()
@@ -474,7 +487,7 @@ def calc_attacked_metrics():
             # Calculate metrics
             attacked_NC_result.config(text = round(nc(watermark, attacked_signature), 7))
 
-# 
+# the function that handel resting the interface to the initial values
 def reset_interface():
     # Clear the entry widget
     signature_size_entry.delete(0, tk.END)
@@ -522,7 +535,7 @@ def reset_interface():
     attacked_NC_result.config(text = "0")
     attacked_SSIM_result.config(text = "0")
 
-# Function to handle encoding algorithm selection
+# the function that handle the encoding algorithm selection
 def algorithm_selected(algorithm):
     reset_interface()
 
@@ -554,7 +567,7 @@ def algorithm_selected(algorithm):
         selected_sub_band.set("HH")
         sub_band_menu.grid(row=0, column=4, padx=5)
 
-# 
+# the function that handle the encoding LSB algorithm selection
 def lsb_selected(lsb_type):
     # calculate embedding space
     calculate_embedding_space()
@@ -562,11 +575,7 @@ def lsb_selected(lsb_type):
     # calculate required embedding space
     calculate_required_embedding_space()
 
-# 
-def sub_band_selected(sub_band):
-    pass
-
-# 
+# the function that handle changing the watermark type
 def change_watermark_type():
     # clear watermark image
     watermark_entry.delete(0, tk.END)
@@ -632,7 +641,6 @@ def change_watermark_type():
 
 
 #####################################################################
-
 root = tk.Tk()
 root.title("Watermarking Module by Lamine")
 root = tk.Frame(root)
