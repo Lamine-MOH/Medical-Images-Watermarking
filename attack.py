@@ -190,16 +190,16 @@ class Attack:
     
 
 if __name__ == "__main__":
-    # img = cv2.imread("./img/img_1.png", 0)
+    img = cv2.imread("./img/img_1.png", 0)
     # img = cv2.imread("./img/img_4.jpg", 0)
-    img = cv2.imread("./img/test_1.jpg", 0)
+    # img = cv2.imread("./img/test_1.jpg", 0)
 
-    # img = Attack.crop(img)
+    img = Attack.crop(img)
     # img = Attack.resize(img)
     # img = Attack.resize(img, width_resizing=2, height_resizing=1)
     # img = Attack.shear(img)
     # img = Attack.salt(img)
-    img = Attack.pepper(img)
+    # img = Attack.pepper(img)
     # img = Attack.gaussian_noise(img)
     # img = Attack.rotate90(img)
     # img = Attack.rotate180(img)

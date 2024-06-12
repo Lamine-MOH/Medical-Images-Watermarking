@@ -1,11 +1,6 @@
-import math
-
 import cv2
 import numpy as np
 import pywt  # PyWavelets library for wavelet transforms
-
-# Import custom classes or functions from external modules
-from attack import Attack
 from watermark import Watermark
 
 
@@ -69,7 +64,6 @@ class DWT_Watermark(Watermark):
 
         # Reshape arrays to match the shape of the original array and return
         return np.array(binary_int_part), frac_part.reshape(array_shape), neg_indicator.reshape(array_shape), signature_bit
-
 
     # Private method to embed watermark signature into embedding space
     def __embed_signature(self, binary_integer_part, fractional_part, negative_indicator, signature):

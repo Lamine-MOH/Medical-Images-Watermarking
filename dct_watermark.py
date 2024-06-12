@@ -74,11 +74,7 @@ class DCT_Watermark(Watermark):
                     extracted_signature[(i//self.block_size) * self.signature_size + j//self.block_size] = 1
         
         return [extracted_signature]
-
-
-
-
-
+    
 
 if __name__ == "__main__":
     message = """
