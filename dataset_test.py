@@ -24,7 +24,7 @@ def apply_attacks(img):
         "randline": Attack.randline(img), 
         "cover": Attack.cover(img), 
         "compress": Attack.compress(img), 
-        "quantize": Attack.quantize(img), 
+        # "quantize": Attack.quantize(img), 
         # "blur": Attack.blur(img), 
         # "median_filter": Attack.median_filter(img)
     }
@@ -654,7 +654,6 @@ def dct_img(dataset_folders, watermark_path, export_path="./dataset_export/", re
         }, file, indent=4)
 
 
-
 def dwt_text(dataset_folders, message, export_path="./dataset_export/", results_path="./dataset_results/", limit=200, signature_size=80, wavelet_level=1):
     print(f"\n\nAlgorithm DWT Text")
     
@@ -850,7 +849,7 @@ def calc_result(json_path):
     for matrices in data["Normal"].values():
         for key, value in matrices.items():
             if key in result["Normal"]:
-                result["Normal"][key] += value / normal_size
+                result["Normal"][key] += abs(value / normal_size)
             else:
                 result["Normal"][key] = value / normal_size
 
@@ -900,7 +899,7 @@ Notes: Patient experiences occasional dizziness, advised to monitor blood pressu
     # dct_text(dataset_folders, message)
     # dwt_text(dataset_folders, message)
 
-    # lsb_img_rgb(dataset_folders, watermark_path)
+    # lsb_img_rgb(dataset_folders, watermark_path, limit=10, signature_size=100)
     # lsb_img_gray(dataset_folders, watermark_path)
     # lsb_img_min_avr_max(dataset_folders, watermark_path, signature_size=200, limit=10)
     # dct_img(dataset_folders, watermark_path)
@@ -910,6 +909,10 @@ Notes: Patient experiences occasional dizziness, advised to monitor blood pressu
     # result = calc_result("./dataset_results/LSB_Text_RGB.json")
     # result = calc_result("./dataset_results/LSB_Text_Gray.json")
     # result = calc_result("./dataset_results/LSB_Text_Min_Avr_Max.json")
+
+    # result = calc_result("./dataset_results/LSB_Image_RGB.json")
+    # result = calc_result("./dataset_results/LSB_Image_Gray.json")
+    # result = calc_result("./dataset_results/LSB_Image_Min_Avr_Max.json")
 
     # result = calc_result("./dataset_results/DCT_Text.json")
     # result = calc_result("./dataset_results/DCT_Image.json")
