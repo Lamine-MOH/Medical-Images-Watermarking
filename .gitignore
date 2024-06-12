@@ -2,4 +2,8 @@ __pycache__/
 .vscode/
 dataset_export/*
 dataset_results/*
+img/*LSB*
+img/*DCT*
+img/*DWT*
+img/binary_img.png
 test.py
