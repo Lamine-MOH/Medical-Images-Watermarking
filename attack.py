@@ -60,7 +60,7 @@ class Attack:
         return noisy_image
 
     @staticmethod
-    def gaussian_noise(image, mean=0, stddev=30):
+    def gaussian_noise(image, mean=0, stddev=10):
         height, width = image.shape
 
         gauss = np.random.normal(mean, stddev, (height, width))
