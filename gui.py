@@ -790,7 +790,7 @@ required_embedding_space_label.grid(row=5, column=0)
 stego_frame = tk.Frame(watermarking_frame, highlightbackground="black", highlightthickness=1, padx=10, pady=10)
 stego_frame.grid(row=0, column=2, padx=5, pady=5)
 
-cover_image_label = tk.Label(stego_frame, text="Stego Image", font=("Arial", 24))
+cover_image_label = tk.Label(stego_frame, text="Watermarked Image", font=("Arial", 24))
 cover_image_label.grid(row=0, column=0)
 
 stego_image_entry_frame = tk.Frame(stego_frame)
@@ -812,7 +812,7 @@ stego_image_info.grid(row=3, column=0)
 signature_frame = tk.Frame(watermarking_frame, highlightbackground="black", highlightthickness=1, padx=10, pady=10)
 signature_frame.grid(row=0, column=3, padx=5, pady=5)
 
-signature_label = tk.Label(signature_frame, text="Signature", font=("Arial", 24))
+signature_label = tk.Label(signature_frame, text="Extracted Watermark", font=("Arial", 24))
 signature_label.grid(row=0, column=0)
 
 signature_image_frame = tk.Frame(signature_frame)
@@ -959,7 +959,7 @@ apply_attack_button.grid(row=2, column=0)
 attacked_image_frame = tk.Frame(root, highlightbackground="black", highlightthickness=1, padx=10, pady=10)
 attacked_image_frame.grid(row=3, column=2, padx=5, pady=5)
 
-attacked_stego_image_label = tk.Label(attacked_image_frame, text="Attacked Stego Image", font=("Arial", 16))
+attacked_stego_image_label = tk.Label(attacked_image_frame, text="Attacked Watermarked Image", font=("Arial", 14))
 attacked_stego_image_label.grid(row=0, column=0)
 
 attacked_stego_image_entry = tk.Entry(attacked_image_frame, width=30)
@@ -968,7 +968,7 @@ attacked_stego_image_entry.grid(row=1, column=0)
 attacked_stego_image_preview = tk.Label(attacked_image_frame)
 attacked_stego_image_preview.grid(row=2, column=0)
 
-attacked_signature_image_label = tk.Label(attacked_image_frame, text="Attacked Signature", font=("Arial", 16))
+attacked_signature_image_label = tk.Label(attacked_image_frame, text="Attacked Extracted Watermark", font=("Arial", 14))
 attacked_signature_image_label.grid(row=0, column=1)
 
 attacked_signature_image_entry = tk.Entry(attacked_image_frame, width=30)
