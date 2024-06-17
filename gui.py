@@ -7,6 +7,7 @@ import os
 import lsb as lsb
 from metrics import *
 from text_to_img import *
+from attack import *
 from dct_watermark import *
 from dwt_watermark import *
 
@@ -574,6 +575,10 @@ def lsb_selected(lsb_type):
 
     # calculate required embedding space
     calculate_required_embedding_space()
+
+# the function that handle the sub band selection
+def sub_band_selected(lsb_type):
+    pass
 
 # the function that handle changing the watermark type
 def change_watermark_type():
