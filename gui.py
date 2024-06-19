@@ -647,12 +647,12 @@ def change_watermark_type():
 
 #####################################################################
 root = tk.Tk()
-root.title("Watermarking Module by Lamine")
+root.title("Watermarking Module")
 root = tk.Frame(root)
 root.pack(padx=10, pady=10)
 
 # Title of the interface
-tk.Label(root, text="Watermarking Module by Lamine", font=("Arial", 26)).grid(row=0, column=0, columnspan=4)
+tk.Label(root, text="Watermarking Module", font=("Arial", 26)).grid(row=0, column=0, columnspan=4)
 
 ### The Options frame ###
 options_frame = tk.Frame(root)
